@@ -1,0 +1,10 @@
+tile.teleporter.name=Teleporter
+tile.oreLead.name=Lead Ore
+tile.blockLead.name=Block of Lead
+itemGroup.crobertech=Crobertech
+item.ingotLead.name=Lead Ingot
+item.Croberwrench.name=Wrench
+item.spaceBracelet.name=Space Bracelet
+item.customArmor.name=Custom Armor
+achievement.teleport.desc=Make a successful teleport.
+achievement.teleport=Dooo Weee Doooo!

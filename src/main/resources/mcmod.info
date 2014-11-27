@@ -1,0 +1,16 @@
+[
+{
+  "modid": "crobertech",
+  "name": "Crobertech",
+  "description": "Made by Croberson(me), but for some reason the 'Author' isn't working so this will have to do.",
+  "version": "dev",
+  "mcversion": "1.7.10",
+  "url": "http://tinyurl.com/76elydz",
+  "updateUrl": "",
+  "authors": ["Croberson"],
+  "credits": "Huge thanks to Pahimar, Minalien, VSWE, ScratchForFun, And ErogenousBeef",
+  "logoFile": "crobertech_logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
