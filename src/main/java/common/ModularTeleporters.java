@@ -24,7 +24,9 @@ public class ModularTeleporters{
 		
 	}
 	
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		
 	}
+	
 }
