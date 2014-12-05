@@ -1,7 +1,7 @@
 [
 {
-  "modid": "crobertech",
-  "name": "Crobertech",
+  "modid": "modularteleporters",
+  "name": "Modular Teleporters",
   "description": "Made by Croberson(me), but for some reason the 'Author' isn't working so this will have to do.",
   "version": "dev",
   "mcversion": "1.7.10",
