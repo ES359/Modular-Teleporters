@@ -4,9 +4,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 public class BlockMetal extends Block{
 	
@@ -15,8 +17,7 @@ public class BlockMetal extends Block{
 	public static final int PLATINUM = 2;
 	public static final int LEAD = 3;
 	
-	public static String materials[]= {"osmium", "bismuth", "platinum", "lead"}; 
-	public static String subBlocks[]= {"blockOsmium", "blockBismuth", "blockPlatinum", "blockLead"};
+	public static String subBlocks[]= {"Osmium", "Bismuth", "Platinum", "Lead"};
 	
 	public BlockMetal() {
 		super(Material.iron);
@@ -34,4 +35,16 @@ public class BlockMetal extends Block{
 		}
 	}
 	
+	@Override
+	public IIcon getIcon(int side, int meta) {
+		return blockIcon;
+		
+	}
+	
+	@Override
+	public void registerBlockIcons(IIconRegister register){
+		for(int i = 0; i < subBlocks.length; i++){
+			register.registerIcon(p_94245_1_);
+		}
+	}
 }

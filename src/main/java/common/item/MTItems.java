@@ -15,7 +15,7 @@ public class MTItems {
 		String itemName;
 		for(int i = 0; i < ItemIngot.subTypes.length; i++) {
 			itemName = ItemIngot.subTypes[i];
-			OreDictionary.registerOre("ingot" + Character.toUpperCase(itemName.charAt(0)) + itemName.substring(1), itemIngot.getItemStackForType(itemName));
+			OreDictionary.registerOre("ingot" + itemName, itemIngot.getItemStackForType(itemName));
 			
 		}
 	}

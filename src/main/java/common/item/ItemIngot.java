@@ -16,7 +16,7 @@ public class ItemIngot extends ItemBase{
 	
 	public int StackSize = 64;
 	
-	public static String subTypes[] = {"osmium", "bismuth", "platinum", "lead"}; //include ingots here
+	public static String subTypes[] = {"Osmium", "Bismuth", "Platinum", "Lead"}; //include ingots here
 	
 	@SideOnly(Side.CLIENT)
 	public IIcon icons[];
@@ -29,12 +29,13 @@ public class ItemIngot extends ItemBase{
 	
 	@Override
 	public String getUnlocalizedName() {
-		return null; //I havent set up unlocalized names yet
+		return null; 
 	}
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		return null; //I havent set up unlocalized names yet
+		int i = Math.min(subTypes.length-1, stack.getItemDamage());
+		return "item.ingot" + subTypes[i];
 	}
 	
 	@Override
@@ -49,7 +50,7 @@ public class ItemIngot extends ItemBase{
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int meta)
     {
-        return icons[MathHelper.clamp_int(meta, 0, subTypes.length - 1)];
+        return icons[MathHelper.clamp_int(meta, 0, subTypes.length - 1)]; 
     }
 	
 	@Override
@@ -57,7 +58,7 @@ public class ItemIngot extends ItemBase{
 	public void registerIcons(IIconRegister register) {
 		icons = new IIcon[subTypes.length];
 		for (int i = 0; i < subTypes.length; i++) {
-			register.registerIcon(Reference.resourcePrefix + Reference.itemIngotTexture + "_" + subTypes[i]);
+			icons[i] = register.registerIcon(Reference.resourcePrefix + "ingot" + subTypes[i]);
 		}	
 	}
 	
