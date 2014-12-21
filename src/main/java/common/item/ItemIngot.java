@@ -24,7 +24,6 @@ public class ItemIngot extends ItemBase{
 	public ItemIngot() {
 		super(64);
 		setHasSubtypes(true);
-		//setUnlocalizedName() // set this to something once I get my shit together.
 	}
 	
 	@Override

@@ -2,6 +2,11 @@ package common.block;
 
 import java.util.List;
 
+import common.creativeTab.MTCreativeTab;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import reference.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,8 +24,12 @@ public class BlockMetal extends Block{
 	
 	public static String subBlocks[]= {"Osmium", "Bismuth", "Platinum", "Lead"};
 	
+	@SideOnly(Side.CLIENT)
+	public IIcon icons[];
+	
 	public BlockMetal() {
 		super(Material.iron);
+		setCreativeTab(MTCreativeTab.MODULAR_TELEPORTER_TAB);
 		
 	}
 	@Override
@@ -36,15 +45,25 @@ public class BlockMetal extends Block{
 	}
 	
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		return blockIcon;
+	public IIcon getIcon(int side, int meta) { //error rendering block
+		return icons[meta];
 		
 	}
 	
 	@Override
-	public void registerBlockIcons(IIconRegister register){
+	public void registerBlockIcons(IIconRegister register) {
+		icons = new IIcon[subBlocks.length];
 		for(int i = 0; i < subBlocks.length; i++){
-			register.registerIcon(p_94245_1_);
+			icons[i] = register.registerIcon(Reference.resourcePrefix + "block" + subBlocks[i]);
 		}
+	}
+	
+	public ItemStack getItemStackForName(String name) { 
+		for (int i = 0; i < subBlocks.length; i++) {
+			if (subBlocks[i].equals(name)){
+				return (new ItemStack(this, 1, i));
+			}
+		}
+		return null;
 	}
 }

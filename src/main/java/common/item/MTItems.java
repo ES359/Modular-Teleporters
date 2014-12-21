@@ -5,7 +5,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class MTItems {
 	
-	public static ItemIngot itemIngot = new ItemIngot();//I dont know how to use metadata
+	public static ItemIngot itemIngot = new ItemIngot();
 	
 	public static void init(){
 		//GameRegistry

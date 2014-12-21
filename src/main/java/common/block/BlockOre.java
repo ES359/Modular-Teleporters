@@ -15,7 +15,7 @@ public class BlockOre extends Block{
 	public static final int PLATINUM = 2;
 	public static final int LEAD = 3;
 	
-	public static String materials[] = {"osmium", "bismuthinite", "platinum", "lead"};
+	public static String materials[] = {"osmium", "bismite", "platinum", "lead"};
 	public static String subBlocks[] = {"blockOsmiumOre", "blockBismuthOre", "blockPlatinumOre", "blockLeadOre"};
 	
 	public BlockOre() {
