@@ -25,11 +25,12 @@ public class BlockMetal extends Block{
 	public static String subBlocks[]= {"Osmium", "Bismuth", "Platinum", "Lead"};
 	
 	@SideOnly(Side.CLIENT)
-	public IIcon icons[];
+	private IIcon icons[] = new IIcon[subBlocks.length];
 	
 	public BlockMetal() {
 		super(Material.iron);
 		setCreativeTab(MTCreativeTab.MODULAR_TELEPORTER_TAB);
+		setBlockName("mtMetal");
 		
 	}
 	@Override
@@ -46,13 +47,13 @@ public class BlockMetal extends Block{
 	
 	@Override
 	public IIcon getIcon(int side, int meta) { //error rendering block
+		meta = Math.max(0, Math.min(subBlocks.length, meta));
 		return icons[meta];
 		
 	}
 	
 	@Override
 	public void registerBlockIcons(IIconRegister register) {
-		icons = new IIcon[subBlocks.length];
 		for(int i = 0; i < subBlocks.length; i++){
 			icons[i] = register.registerIcon(Reference.resourcePrefix + "block" + subBlocks[i]);
 		}

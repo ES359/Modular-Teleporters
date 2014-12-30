@@ -6,4 +6,6 @@ public class Reference {
 	public static final String VERSION = "dev";
 
 	public static String resourcePrefix = MODID + ":";
+	
+	public static float metalHardness = 3.00F;
 }

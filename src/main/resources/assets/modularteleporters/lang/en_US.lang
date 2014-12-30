@@ -3,4 +3,8 @@ item.ingotBismuth.name=Bismuth Ingot
 item.ingotPlatinum.name=Platinum Ingot
 item.ingotLead.name=Lead Ingot
 
+tile.mtMetal.0.name=Block of Lead
+tile.mtMetal.1.name=Block of Bismuth
+tile.mtMetal.2.name=Block of Platinum
+tile.mtMetal.3.name=Block of Osmium
 itemGroup.Modular Teleporters=Modular Teleporters
