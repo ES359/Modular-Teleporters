@@ -11,7 +11,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid=Reference.MODID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "common.handler.MTGuiConfigHandler")//"I'm making a note here... we need to reformat the packages so they arent just "common.block.etc"
+@Mod(modid=Reference.MODID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "client.MtGuiConfigFactory")//"I'm making a note here... we need to reformat the packages so they arent just "common.block.etc"
 public class ModularTeleporters{
 	
 	@Instance(Reference.MODID)

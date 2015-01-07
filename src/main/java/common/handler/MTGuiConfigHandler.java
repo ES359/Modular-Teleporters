@@ -7,6 +7,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.client.config.GuiConfig;
+import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class MTGuiConfigHandler extends GuiConfig{
 	
@@ -34,6 +36,15 @@ public class MTGuiConfigHandler extends GuiConfig{
 		//set config fields to configuration.get>Value<()
 		leadBlockBlastResistance = configuration.getInt("Block of Lead blast resistance", Configuration.CATEGORY_GENERAL, 6000, 4, 10000, "Sets the blast resistance of the block of lead");
 		osmiumBlockBlastResistance = configuration.getInt("Block of Osmium blast resistance", Configuration.CATEGORY_GENERAL, 43, 4, 10000, "Sets the blast resistance of the block of Osmium");
-		bismuthBlockBlastResistance = configuration.getInt("Block of Bismuth blast resistance", Configuration.CATEGORY_GENERAL,((int) leadBlockBlastResistance * 0.86), 4, 10000, "Sets the blast resistance of the block of Bismuth");
+		bismuthBlockBlastResistance = configuration.getInt("Block of Bismuth blast resistance", Configuration.CATEGORY_GENERAL, (int) ((int) leadBlockBlastResistance * 0.86), 4, 10000, "Sets the blast resistance of the block of Bismuth");
+		if (configuration.hasChanged()){
+			configuration.save();
+		}
+	}
+	@SubscribeEvent
+	public static void onConfigChangeEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.modID.equalsIgnoreCase(Reference.MODID)){
+			loadConfiguration();
+		}
 	}
 }
