@@ -1,7 +1,7 @@
 package common.block;
 
+import common.handler.MTConfigHandler;
 import common.item.ItemBlockModularTeleporters;
-
 import reference.Reference;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -22,8 +22,8 @@ public class MTBlocks {
 		
 	}
 	
-	public static void registerProperties() { //The blockMetal blocks don't create different blocks when placed, this is most likely a problem with the meta-data.
-		blockMetal.setHardness(Reference.metalHardness);
+	public static void registerProperties() { 
+		blockMetal.setHardness(MTConfigHandler.MetalBlockBlastResistance);
 		
 	}
 	

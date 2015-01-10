@@ -31,7 +31,6 @@ public class BlockMetal extends Block{
 		super(Material.iron);
 		setCreativeTab(MTCreativeTab.MODULAR_TELEPORTER_TAB);
 		setBlockName("mtMetal");
-		
 	}
 	@Override
 	public int damageDropped(int metadata) {

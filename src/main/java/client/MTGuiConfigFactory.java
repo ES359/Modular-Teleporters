@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import cpw.mods.fml.client.IModGuiFactory;
 
-public class MtGuiConfigFactory implements IModGuiFactory{
+public class MTGuiConfigFactory implements IModGuiFactory{
 
 	@Override
 	public void initialize(Minecraft minecraftInstance) {

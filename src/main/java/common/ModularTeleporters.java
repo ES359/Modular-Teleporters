@@ -3,6 +3,7 @@ package common;
 import reference.Reference;
 import common.block.MTBlocks;
 import common.handler.MTGuiConfigHandler;
+import common.handler.MTConfigHandler;
 import common.item.MTItems;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -19,7 +20,8 @@ public class ModularTeleporters{
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-		MTGuiConfigHandler.init(event.getSuggestedConfigurationFile());
+		MTConfigHandler.init(event.getSuggestedConfigurationFile());
+		MTConfigHandler.loadConfiguration();
 	}
 	
 	@EventHandler
