@@ -1,9 +1,8 @@
-package network;
+package shibe.croberson.modularteleporters.network;
 
-import reference.Reference;
+import shibe.croberson.modularteleporters.reference.Reference;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
 
 public class PacketHandler {
 	public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);

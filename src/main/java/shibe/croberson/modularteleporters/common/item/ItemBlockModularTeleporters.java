@@ -1,4 +1,4 @@
-package common.item;
+package shibe.croberson.modularteleporters.common.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlockWithMetadata;

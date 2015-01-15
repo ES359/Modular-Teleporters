@@ -1,9 +1,8 @@
-package common.block;
+package shibe.croberson.modularteleporters.common.block;
 
-import common.handler.MTConfigHandler;
-import common.item.ItemBlockModularTeleporters;
-import reference.Reference;
 import net.minecraftforge.oredict.OreDictionary;
+import shibe.croberson.modularteleporters.common.handler.MTConfigHandler;
+import shibe.croberson.modularteleporters.common.item.ItemBlockModularTeleporters;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class MTBlocks {

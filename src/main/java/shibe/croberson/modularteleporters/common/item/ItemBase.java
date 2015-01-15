@@ -1,8 +1,7 @@
-package common.item;
-
-import common.creativeTab.MTCreativeTab;
+package shibe.croberson.modularteleporters.common.item;
 
 import net.minecraft.item.Item;
+import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
 
 public class ItemBase extends Item{
 	

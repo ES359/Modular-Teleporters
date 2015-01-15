@@ -1,10 +1,9 @@
-package common;
+package shibe.croberson.modularteleporters.common;
 
-import reference.Reference;
-import common.block.MTBlocks;
-import common.handler.MTGuiConfigHandler;
-import common.handler.MTConfigHandler;
-import common.item.MTItems;
+import shibe.croberson.modularteleporters.common.block.MTBlocks;
+import shibe.croberson.modularteleporters.common.handler.MTConfigHandler;
+import shibe.croberson.modularteleporters.common.item.MTItems;
+import shibe.croberson.modularteleporters.reference.Reference;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;

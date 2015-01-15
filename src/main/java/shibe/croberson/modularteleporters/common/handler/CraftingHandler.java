@@ -1,4 +1,4 @@
-package common.handler;
+package shibe.croberson.modularteleporters.common.handler;
 
 public class CraftingHandler {
 	

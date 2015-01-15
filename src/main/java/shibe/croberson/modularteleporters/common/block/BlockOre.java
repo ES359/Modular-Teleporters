@@ -1,4 +1,4 @@
-package common.block;
+package shibe.croberson.modularteleporters.common.block;
 
 import java.util.List;
 

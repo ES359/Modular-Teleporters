@@ -1,4 +1,4 @@
-package common.item;
+package shibe.croberson.modularteleporters.common.item;
 
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;

@@ -1,12 +1,9 @@
-package common.creativeTab;
+package shibe.croberson.modularteleporters.common.creativeTab;
 
-import common.item.ItemIngot;
-import common.item.MTItems;
-import reference.Reference;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import shibe.croberson.modularteleporters.common.item.MTItems;
+import shibe.croberson.modularteleporters.reference.Reference;
 
 public class MTCreativeTab {
 	public static final CreativeTabs MODULAR_TELEPORTER_TAB = new CreativeTabs(Reference.NAME) {

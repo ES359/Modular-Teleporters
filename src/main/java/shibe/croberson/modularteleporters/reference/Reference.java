@@ -1,4 +1,4 @@
-package reference;
+package shibe.croberson.modularteleporters.reference;
 
 public class Reference {
 	public static final String NAME = "Modular Teleporters";

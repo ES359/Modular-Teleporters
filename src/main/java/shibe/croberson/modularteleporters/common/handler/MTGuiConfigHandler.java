@@ -1,14 +1,10 @@
-package common.handler;
+package shibe.croberson.modularteleporters.common.handler;
 
-import java.io.File;
-
-import reference.Reference;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import shibe.croberson.modularteleporters.reference.Reference;
 import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class MTGuiConfigHandler extends GuiConfig{
 	

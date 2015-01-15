@@ -1,11 +1,10 @@
-package client;
+package shibe.croberson.modularteleporters.client;
 
 import java.util.Set;
 
-import common.handler.MTGuiConfigHandler;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import shibe.croberson.modularteleporters.common.handler.MTGuiConfigHandler;
 import cpw.mods.fml.client.IModGuiFactory;
 
 public class MTGuiConfigFactory implements IModGuiFactory{

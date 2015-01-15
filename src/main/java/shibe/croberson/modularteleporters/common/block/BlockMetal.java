@@ -1,12 +1,7 @@
-package common.block;
+package shibe.croberson.modularteleporters.common.block;
 
 import java.util.List;
 
-import common.creativeTab.MTCreativeTab;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import reference.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,6 +9,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
+import shibe.croberson.modularteleporters.reference.Reference;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMetal extends Block{
 	
