@@ -11,6 +11,7 @@ import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
 import shibe.croberson.beefcore.core.multiblock.rectangular.RectangularMultiblockControllerBase;
 import shibe.croberson.modularteleporters.common.multiblock.interfaces.ITickableMultiblockPart;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterRotorBearing;
 //Most of this is taken from bigreactors
 public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 	
@@ -23,8 +24,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 	private Set<IMultiblockPart> attachedControllers;
 	private Set<ITickableMultiblockPart> attachedTickables;
 	private Set<TileEntityTeleporterFluidPort> attachedFluidPorts;
+	private Set<TileEntityTeleporterRotorBearing> attachedRotorBearings;
 	
-	protected MultiblockTeleporter(World world) {
+	public MultiblockTeleporter(World world) {
 		super(world);
 		
 		updatePlayers = new HashSet<EntityPlayer>();
@@ -33,7 +35,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedFluidPorts = new HashSet<TileEntityTeleporterFluidPort>();
-		
+		attachedRotorBearings = new HashSet<TileEntityTeleporterRotorBearing>();
 		
 		
 	}
@@ -63,7 +65,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		if (newPart instanceof ITickableMultiblockPart) {
 			this.attachedTickables.add((ITickableMultiblockPart)newPart);
 		} 
-		
+		if(newPart instanceof TileEntityTeleporterRotorBearing) { 
+			this.attachedRotorBearings.add((TileEntityTeleporterRotorBearing)newPart);
+		}
 	}
 
 	@Override
@@ -73,6 +77,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		}
 		if (oldPart instanceof ITickableMultiblockPart){
 			this.attachedTickables.add((ITickableMultiblockPart)oldPart);
+		}
+		if (oldPart instanceof TileEntityTeleporterRotorBearing) {
+			this.attachedRotorBearings.add((TileEntityTeleporterRotorBearing)oldPart);
 		}
 	}
 

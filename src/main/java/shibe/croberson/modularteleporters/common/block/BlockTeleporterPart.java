@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import shibe.croberson.beefcore.core.multiblock.IMultiblockPart;
 import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPart;
 
 public class BlockTeleporterPart extends BlockContainer implements ITileEntityProvider{
 	
@@ -41,7 +42,8 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		case TELEPORTER_FLUID_PORT:
 			return new TileEntityTeleporterFluidPort();
 		
-		
+		default: 
+			return new TileEntityTeleporterPart();
 		
 		}
 		

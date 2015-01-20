@@ -3,6 +3,7 @@ package shibe.croberson.modularteleporters.common.multiblock.tileentity;
 import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
 import shibe.croberson.beefcore.core.multiblock.MultiblockValidationException;
 import shibe.croberson.beefcore.core.multiblock.rectangular.RectangularMultiblockTileEntityBase;
+import shibe.croberson.modularteleporters.common.multiblock.MultiblockTeleporter;
 
 public class TileEntityTeleporterPartBase extends RectangularMultiblockTileEntityBase{
 
@@ -43,7 +44,7 @@ public class TileEntityTeleporterPartBase extends RectangularMultiblockTileEntit
 
 	@Override
 	public MultiblockControllerBase createNewMultiblock() {
-		return null;
+		return new MultiblockTeleporter(worldObj);
 	}
 
 	@Override
