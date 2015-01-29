@@ -13,8 +13,11 @@ import net.minecraft.world.World;
 import shibe.croberson.beefcore.core.multiblock.IMultiblockPart;
 import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
 import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
+import shibe.croberson.modularteleporters.common.multiblock.MultiblockTeleporter;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPart;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPartBase;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort.FluidFlow;
 import shibe.croberson.modularteleporters.reference.Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +31,6 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	
 	private static final String[] subBlocks = {"casing", "controller", "fluidPort", "bearing"};
 	
-	//Sub Icons, don't know what they do, but i will find out
 	private static final int SUBICON_NONE = -1;
 	private static final int SUBICON_CASING_TOP = 0;
 	private static final int SUBICON_CASING_BOTTOM = 1;
@@ -36,8 +38,9 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	private static final int SUBICON_CASING_RIGHT = 3;
 	private static final int SUBICON_CASING_FACE = 4;
 	private static final int SUBICON_CASING_CORNER = 5;
+	private static final int SUBICON_FLUIDPORT_OUTPUT = 6;
 	
-	private static final String[] subIconNames = { };
+	private static final String[] subIconNames = {"casing.edge.0", "casing.edge.1", "casing.edge.2", "casing.edge.3", "casing.edge.4", "casing.face", "casing.corner", "casing.controller.active", "casing.controller.idle", "fluidPort.outlet" };
 	
 	
 	private IIcon[] icons = new IIcon[subBlocks.length];
@@ -64,20 +67,53 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		}
 		this.blockIcon = icons[0];
 	}
-	//READ ME: should I follow Mr. E Beef's BlockReactorPart or BlockTurbinePart because for some reason they are different
+	
 	@Override
 	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
-		IIcon icon = null;
+		TileEntity te = blockAccess.getTileEntity(x, y, z);
 		int metadata = blockAccess.getBlockMetadata(x, y, z);
 		//insert meta-data texture mapping here
-		
+		if(te instanceof TileEntityTeleporterPartBase) { 
+			TileEntityTeleporterPartBase part = (TileEntityTeleporterPartBase)te;
+			MultiblockTeleporter teleporter = part.getTeleporter();
+			
+			if(metadata == TELEPORTER_FLUID_PORT) {//first check the fluid port
+				if (te instanceof TileEntityTeleporterFluidPort) {
+					if(teleporter == null || !teleporter.isAssembled() || part.getOutwardsDir().ordinal() == side) {
+						if(((TileEntityTeleporterFluidPort)te).getFlowDirection() == FluidFlow.out) {
+							return subIcons[SUBICON_FLUIDPORT_OUTPUT];
+						} else {
+							return icons[TELEPORTER_FLUID_PORT];
+						}
+						
+					}else if(teleporter.isAssembled() && part.getOutwardsDir().ordinal() != side) {
+						return subIcons[TELEPORTER_CASING];
+					}
+				}
+				return getIcon(side, metadata); 
+			} else if(!part.isConnected() || teleporter == null || !teleporter.isAssembled()) {
+				return getIcon(side, metadata);
+			} else {
+				
+			}
+			
+			if(metadata == TELEPORTER_CONTROLLER){
+				
+			}
+			
+		}
 		
 		
 		//and end with this 
-		return icon != null ? icon : getIcon(side, metadata);
+		return getIcon(side, metadata);
 	}
 	
-	
+	@Override
+	public IIcon getIcon(int side, int metadata) {
+		metadata = Math.max(0, Math.min(metadata, subBlocks.length-1));
+		return icons[metadata];
+		
+	}
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		switch(metadata) {

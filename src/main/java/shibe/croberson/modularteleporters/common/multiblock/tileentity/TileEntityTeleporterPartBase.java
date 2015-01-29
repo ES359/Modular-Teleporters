@@ -51,5 +51,9 @@ public class TileEntityTeleporterPartBase extends RectangularMultiblockTileEntit
 	public Class<? extends MultiblockControllerBase> getMultiblockControllerType() {
 		return null;
 	}
-
+	
+	public MultiblockTeleporter getTeleporter() {
+		return (MultiblockTeleporter)getMultiblockController();
+	}
+	
 }
