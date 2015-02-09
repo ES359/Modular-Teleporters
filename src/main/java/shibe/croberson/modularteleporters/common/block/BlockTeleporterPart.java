@@ -1,5 +1,6 @@
 package shibe.croberson.modularteleporters.common.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -10,15 +11,18 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import shibe.croberson.beefcore.core.common.CoordTriplet;
 import shibe.croberson.beefcore.core.multiblock.IMultiblockPart;
 import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
 import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
 import shibe.croberson.modularteleporters.common.multiblock.MultiblockTeleporter;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort.FluidFlow;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPart;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPartBase;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort.FluidFlow;
 import shibe.croberson.modularteleporters.reference.Reference;
+import shibe.croberson.modularteleporters.utils.StaticUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -38,9 +42,11 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	private static final int SUBICON_CASING_RIGHT = 3;
 	private static final int SUBICON_CASING_FACE = 4;
 	private static final int SUBICON_CASING_CORNER = 5;
-	private static final int SUBICON_FLUIDPORT_OUTPUT = 6;
+	private static final int SUBICON_CONTROLLER_ACTIVE = 6;
+	private static final int SUBICON_CONTROLLER_IDLE = 7;
+	private static final int SUBICON_FLUIDPORT_OUTPUT = 8;
 	
-	private static final String[] subIconNames = {"casing.edge.0", "casing.edge.1", "casing.edge.2", "casing.edge.3", "casing.edge.4", "casing.face", "casing.corner", "casing.controller.active", "casing.controller.idle", "fluidPort.outlet" };
+	private static final String[] subIconNames = {"casing.edge.0", "casing.edge.1", "casing.edge.2", "casing.edge.3", "casing.edge.4", "casing.face", "casing.corner", "controller.idle", "controller.active", "fluidPort.outlet" };
 	
 	
 	private IIcon[] icons = new IIcon[subBlocks.length];
@@ -94,16 +100,33 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 			} else if(!part.isConnected() || teleporter == null || !teleporter.isAssembled()) {
 				return getIcon(side, metadata);
 			} else {
+				int subIcon = SUBICON_NONE;
 				
-			}
-			
-			if(metadata == TELEPORTER_CONTROLLER){
+				if(metadata == TELEPORTER_CASING) {
+					
+					//getIconForCasing
+				} else if (part.getOutwardsDir().ordinal() == side) { //is the side the side?
+					
+					if(metadata == TELEPORTER_CONTROLLER){
+						if(teleporter.getActive()) {
+							subIcon = SUBICON_CONTROLLER_ACTIVE;
+						} else {
+							subIcon = SUBICON_CONTROLLER_IDLE;
+						}
+					}
+					//here I would put more metadata blocks
+				} else {//if not, it should look blank
+					subIcon = SUBICON_CASING_FACE;
+				}
 				
+				if (subIcon == SUBICON_NONE) {
+					return getIcon(side, metadata);
+				} else {
+					return subIcons[subIcon];
+				}
 			}
 			
 		}
-		
-		
 		//and end with this 
 		return getIcon(side, metadata);
 	}
@@ -114,6 +137,7 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		return icons[metadata];
 		
 	}
+	
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		switch(metadata) {
@@ -126,6 +150,58 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		}
 	}
 	
+	public int getSubIconForCasing(IBlockAccess blockAccess, int x, int y, int z, MultiblockTeleporter teleporter, int side) {
+		CoordTriplet minCoord, maxCoord;
+		minCoord = teleporter.getMinimumCoord();
+		maxCoord = teleporter.getMaximumCoord();
+		
+		if(minCoord == null || maxCoord == null) {
+			return SUBICON_NONE;
+		}
+		
+		int extremes = 0;
+		boolean xExtreme, yExtreme, zExtreme;
+		xExtreme = yExtreme = zExtreme = false;
+		
+		if(x == minCoord.x) { extremes++; xExtreme = true; }
+		if(y == minCoord.y) { extremes++; yExtreme = true; }
+		if(z == minCoord.z) { extremes++; zExtreme = true; }
+		
+		if(x == maxCoord.x) { extremes++; xExtreme = true; }
+		if(y == maxCoord.y) { extremes++; yExtreme = true; }
+		if(z == maxCoord.z) { extremes++; zExtreme = true; }
+		
+		if(extremes >= 3) {
+			return SUBICON_CASING_CORNER;
+		}
+		else if(extremes <= 0) {
+			return SUBICON_NONE;
+		}
+		else if(extremes == 1) {
+			return SUBICON_CASING_FACE;
+		}
+		else { //I dont really understand this, so... Ctrl + c; Ctrl + v
+			ForgeDirection[] dirsToCheck = StaticUtils.neighborsBySide[side];
+			ForgeDirection dir;
+
+			Block myBlock = blockAccess.getBlock(x, y, z);
+			int iconIdx = -1;
+
+			for(int i = 0; i < dirsToCheck.length; i++) {
+				dir = dirsToCheck[i];
+				
+				Block neighborBlock = blockAccess.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+				//this if statement checks if it belongs to the teleporter, I haven't established glass blocks yet
+				if(neighborBlock != myBlock && neighborBlock != BigReactors.blockMultiblockGlass && (BigReactors.blockMultiblockCreativePart != null && neighborBlock != BigReactors.blockMultiblockCreativePart)) {
+					// One of these things is not like the others...
+					iconIdx = i;
+					break;
+				}
+			}
+			
+			return iconIdx + SUBICON_CASING_TOP;
+		}
+	}
 	//checks what tileentity this block belongs to and routes it to the correct functionality
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {

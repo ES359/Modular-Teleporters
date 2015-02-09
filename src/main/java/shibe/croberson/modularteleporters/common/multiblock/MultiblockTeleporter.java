@@ -26,6 +26,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 	private Set<TileEntityTeleporterFluidPort> attachedFluidPorts;
 	private Set<TileEntityTeleporterRotorBearing> attachedRotorBearings;
 	
+	//game data
+	private boolean active;
+	
 	public MultiblockTeleporter(World world) {
 		super(world);
 		
@@ -36,7 +39,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedFluidPorts = new HashSet<TileEntityTeleporterFluidPort>();
 		attachedRotorBearings = new HashSet<TileEntityTeleporterRotorBearing>();
-		
+		active = false;
 		
 	}
 	
@@ -50,7 +53,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
     //    return new TurbineUpdateMessage(this);
 	//}
 	
-	
+	public boolean getActive() {
+		return active;
+	}
 	
 	@Override
 	public void onAttachedPartWithMultiblockData(IMultiblockPart part, NBTTagCompound data) {
