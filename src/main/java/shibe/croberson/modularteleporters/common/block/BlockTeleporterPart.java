@@ -192,7 +192,7 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 				
 				Block neighborBlock = blockAccess.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
 				//this if statement checks if it belongs to the teleporter, I haven't established glass blocks yet
-				if(neighborBlock != myBlock && neighborBlock != BigReactors.blockMultiblockGlass && (BigReactors.blockMultiblockCreativePart != null && neighborBlock != BigReactors.blockMultiblockCreativePart)) {
+				if(neighborBlock != myBlock && neighborBlock != MTBlocks.blockMultiblockGlass) {
 					// One of these things is not like the others...
 					iconIdx = i;
 					break;

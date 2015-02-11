@@ -11,7 +11,7 @@ import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
 import shibe.croberson.beefcore.core.multiblock.rectangular.RectangularMultiblockControllerBase;
 import shibe.croberson.modularteleporters.common.multiblock.interfaces.ITickableMultiblockPart;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterRotorBearing;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystRotorBearing;
 //Most of this is taken from bigreactors
 public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 	
@@ -24,7 +24,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 	private Set<IMultiblockPart> attachedControllers;
 	private Set<ITickableMultiblockPart> attachedTickables;
 	private Set<TileEntityTeleporterFluidPort> attachedFluidPorts;
-	private Set<TileEntityTeleporterRotorBearing> attachedRotorBearings;
+	private Set<TileEntityCatalystRotorBearing> attachedRotorBearings;
 	
 	//game data
 	private boolean active;
@@ -38,7 +38,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedFluidPorts = new HashSet<TileEntityTeleporterFluidPort>();
-		attachedRotorBearings = new HashSet<TileEntityTeleporterRotorBearing>();
+		attachedRotorBearings = new HashSet<TileEntityCatalystRotorBearing>();
 		active = false;
 		
 	}
@@ -70,8 +70,8 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		if (newPart instanceof ITickableMultiblockPart) {
 			this.attachedTickables.add((ITickableMultiblockPart)newPart);
 		} 
-		if(newPart instanceof TileEntityTeleporterRotorBearing) { 
-			this.attachedRotorBearings.add((TileEntityTeleporterRotorBearing)newPart);
+		if(newPart instanceof TileEntityCatalystRotorBearing) { 
+			this.attachedRotorBearings.add((TileEntityCatalystRotorBearing)newPart);
 		}
 	}
 
@@ -83,8 +83,8 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		if (oldPart instanceof ITickableMultiblockPart){
 			this.attachedTickables.add((ITickableMultiblockPart)oldPart);
 		}
-		if (oldPart instanceof TileEntityTeleporterRotorBearing) {
-			this.attachedRotorBearings.add((TileEntityTeleporterRotorBearing)oldPart);
+		if (oldPart instanceof TileEntityCatalystRotorBearing) {
+			this.attachedRotorBearings.add((TileEntityCatalystRotorBearing)oldPart);
 		}
 	}
 

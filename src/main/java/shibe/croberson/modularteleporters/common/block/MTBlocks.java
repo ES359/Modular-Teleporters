@@ -8,10 +8,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class MTBlocks {
 	
 	public static BlockMetal blockMetal = new BlockMetal();
+	public static BlockMultiblockGlass blockMultiblockGlass = new BlockMultiblockGlass();
 	
 	public static void init() {
-		//GameRegisry
+		//GameRegistry
 		GameRegistry.registerBlock(blockMetal, ItemBlockModularTeleporters.class, "blockMetal");
+		GameRegistry.registerBlock(blockMultiblockGlass, ItemBlockModularTeleporters.class,"blockMultiblockGlass");
 		//OreDictionary
 		String name; 
 		for (int i = 0; i < BlockMetal.subBlocks.length; i++) {
