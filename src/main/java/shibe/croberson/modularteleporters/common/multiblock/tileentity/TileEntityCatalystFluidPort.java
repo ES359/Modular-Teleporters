@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityCatalystFluidPort extends TileEntityTeleporterPartBase implements IFluidHandler{
+public class TileEntityCatalystFluidPort extends TileEntityCatalystPartBase implements IFluidHandler{
 	
 	public enum FluidFlow {
 		in, out

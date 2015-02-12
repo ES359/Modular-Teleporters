@@ -24,7 +24,6 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 	private Set<IMultiblockPart> attachedControllers;
 	private Set<ITickableMultiblockPart> attachedTickables;
 	private Set<TileEntityTeleporterFluidPort> attachedFluidPorts;
-	private Set<TileEntityCatalystRotorBearing> attachedRotorBearings;
 	
 	//game data
 	private boolean active;
@@ -38,7 +37,6 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedFluidPorts = new HashSet<TileEntityTeleporterFluidPort>();
-		attachedRotorBearings = new HashSet<TileEntityCatalystRotorBearing>();
 		active = false;
 		
 	}
@@ -70,9 +68,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		if (newPart instanceof ITickableMultiblockPart) {
 			this.attachedTickables.add((ITickableMultiblockPart)newPart);
 		} 
-		if(newPart instanceof TileEntityCatalystRotorBearing) { 
-			this.attachedRotorBearings.add((TileEntityCatalystRotorBearing)newPart);
-		}
+		
 	}
 
 	@Override
@@ -83,9 +79,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase {
 		if (oldPart instanceof ITickableMultiblockPart){
 			this.attachedTickables.add((ITickableMultiblockPart)oldPart);
 		}
-		if (oldPart instanceof TileEntityCatalystRotorBearing) {
-			this.attachedRotorBearings.add((TileEntityCatalystRotorBearing)oldPart);
-		}
+		
 	}
 
 	@Override

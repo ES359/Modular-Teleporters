@@ -1,8 +1,19 @@
 package shibe.croberson.modularteleporters.common.block;
 
-import net.minecraft.block.Block;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import shibe.croberson.beefcore.core.common.CoordTriplet;
+import shibe.croberson.beefcore.core.multiblock.IMultiblockPart;
+import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
+import shibe.croberson.beefcore.core.multiblock.rectangular.PartPosition;
+import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
+import shibe.croberson.modularteleporters.common.multiblock.MultiblockCatalyst;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystFluidPort;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystPart;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystPartBase;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystFluidPort.FluidFlow;
+import shibe.croberson.modularteleporters.reference.Reference;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,30 +23,16 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import shibe.croberson.beefcore.core.common.CoordTriplet;
-import shibe.croberson.beefcore.core.multiblock.IMultiblockPart;
-import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
-import shibe.croberson.beefcore.core.multiblock.rectangular.PartPosition;
-import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
-import shibe.croberson.modularteleporters.common.multiblock.MultiblockTeleporter;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort.FluidFlow;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPart;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPartBase;
-import shibe.croberson.modularteleporters.reference.Reference;
-import shibe.croberson.modularteleporters.utils.StaticUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTeleporterPart extends BlockContainer implements ITileEntityProvider{//see how to add this block with gameregistry
+public class BlockCatalystPart extends BlockContainer{// TODO Basically make a carbon copy of blockTeleporterPart
 	
 	public static final int METADATA_CASING = 0;
 	public static final int METADATA_CONTROLLER = 1;
 	public static final int METADATA_FLUID_PORT = 2;
-	public static final int METADATA_ACCESS_PORT = 3; //let this be a lesson to me, TELEPORTERS DONT NEED ACCESS PORTS
+	public static final int METADATA_ACCESS_PORT = 3;
+	public static final int METADATA_ROTOR_BEARING = 4;
 	
-	public static final String[] subBlocks = {"casing", "controller", "fluidPort"};
+	public static final String[] subBlocks = {"casing", "controller", "fluidPort", "accessPort", "rotorBearing"};
 	
 	private static final int PORT_INLET = 0;
 	private static final int PORT_OUTLET = 1;
@@ -46,18 +43,18 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		{"default", "face", "corner", "eastwest", "northsouth", "vertical" }, //casing
 		{"off", "active"}, //controller
 		{"inlet", "outlet"}, //fluid port
-	
+		{"inlet", "outlet"}, //access port
+		{"default"} //rotor bearing
 	};
-	
 	
 	private IIcon[][] icons = new IIcon[subBlocks.length][];
 	
-	public BlockTeleporterPart(Material material) {
+	public BlockCatalystPart(Material material) {
 		super(material);
 		setStepSound(soundTypeMetal);
 		setHardness(2.0F);
-		setBlockName("blockTeleporterPart");
-		setBlockTextureName(Reference.resourcePrefix + "blockTeleporterPart");
+		setBlockName("blockCatalystPart");
+		setBlockTextureName(Reference.resourcePrefix + "blockCatalystPart");
 		setCreativeTab(MTCreativeTab.MODULAR_TELEPORTER_TAB);
 	}
 	
@@ -82,6 +79,11 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
 		IIcon icon = null;
 		int metadata = blockAccess.getBlockMetadata(x, y, z);
+		
+		if(metadata == METADATA_ROTOR_BEARING) {
+			return getIcon(side, metadata);
+		}
+		
 		switch(metadata) {
 		case METADATA_CASING:
 			icon = getCasingIcon(blockAccess, x, y, z, side);
@@ -92,7 +94,9 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		case METADATA_FLUID_PORT:
 			icon = getFluidPortIcon(blockAccess, x, y, z, side);
 			break;
-		}
+		case METADATA_ACCESS_PORT:
+			//make getAccessPortIcon method
+		
 		//and end with this 
 		return icon != null ? icon : getIcon(side, metadata);
 	}
@@ -107,24 +111,23 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		return blockIcon;
 	}
 	
-	
 	public IIcon getFluidPortIcon(IBlockAccess access, int x, int y, int z, int side) {
 		TileEntity te = access.getTileEntity(x, y, z);
 		int metadata = access.getBlockMetadata(x, y, z);
 		
-		//Are you of a TileEntityTeleporterPartBase class?
-		if(te instanceof TileEntityTeleporterPartBase) {
-			TileEntityTeleporterPartBase part = (TileEntityTeleporterPartBase)te; //Oh my god crober, you can't just ask parts if they're TileEntityTeleporterPartBase.
-			MultiblockTeleporter teleporter = part.getTeleporter();
-			if (te instanceof TileEntityTeleporterFluidPort) {
-				if(teleporter == null || !teleporter.isAssembled() || part.getOutwardsDir().ordinal() == side) {
-					if(((TileEntityTeleporterFluidPort)te).getFlowDirection() == FluidFlow.out) {
+		//Are you of a TileEntityCatalystPartBase class?
+		if(te instanceof TileEntityCatalystPartBase) {
+			TileEntityCatalystPartBase part = (TileEntityCatalystPartBase)te; //Oh my god crober, you can't just ask parts if they're TileEntityCatalystPartBase.
+			MultiblockCatalyst catalyst = part.getCatalyst();
+			if (te instanceof TileEntityCatalystFluidPort) {
+				if(catalyst == null || !catalyst.isAssembled() || part.getOutwardsDir().ordinal() == side) {
+					if(((TileEntityCatalystFluidPort)te).getFlowDirection() == FluidFlow.out) {
 						return icons[METADATA_FLUID_PORT][PORT_OUTLET];
 					} else {
 						return icons[METADATA_FLUID_PORT][PORT_OUTLET];
 					}
 					
-				}else if(teleporter.isAssembled() && part.getOutwardsDir().ordinal() != side) {
+				}else if(catalyst.isAssembled() && part.getOutwardsDir().ordinal() != side) {
 					return icons[METADATA_CASING][DEFAULT];
 				}
 			}
@@ -136,10 +139,10 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		TileEntity te = access.getTileEntity(x, y, z);
 		int metadata = access.getBlockMetadata(x, y, z);
 		
-		if (te instanceof TileEntityTeleporterPartBase) {
-			TileEntityTeleporterPartBase part = (TileEntityTeleporterPartBase)te; 
-			MultiblockTeleporter teleporter = part.getTeleporter();
-			if(teleporter.getActive()) {
+		if (te instanceof TileEntityCatalystPartBase) {
+			TileEntityCatalystPartBase part = (TileEntityCatalystPartBase)te; 
+			MultiblockCatalyst catalyst = part.getCatalyst();
+			if(catalyst.getActive()) {
 				return icons[METADATA_CONTROLLER][CONTROLLER_ON];
 			}else {
 				return icons[METADATA_CONTROLLER][CONTROLLER_ON];
@@ -158,11 +161,11 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	
 	private IIcon getCasingIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
 		TileEntity te = blockAccess.getTileEntity(x, y, z);
-		if(te instanceof TileEntityTeleporterPart) {
-			TileEntityTeleporterPart part = (TileEntityTeleporterPart)te;
+		if(te instanceof TileEntityCatalystPart) {
+			TileEntityCatalystPart part = (TileEntityCatalystPart)te;
 			PartPosition position = part.getPartPosition();
-			MultiblockTeleporter teleporter = part.getTeleporter();
-			if(teleporter == null || !teleporter.isAssembled()) {
+			MultiblockCatalyst catalyst = part.getCatalyst();
+			if(catalyst == null || !catalyst.isAssembled()) {
 				return icons[METADATA_CASING][DEFAULT];
 			}
 			
@@ -177,7 +180,7 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 			case FrameCorner:
 				return icons[METADATA_CASING][CORNER];
 			case Frame:
-				return getCasingEdgeIcon(part, teleporter, side);
+				return getCasingEdgeIcon(part, catalyst, side);
 			case Interior:
 			case Unknown:
 			default:
@@ -187,11 +190,11 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		return icons[METADATA_CASING][DEFAULT];
 	}
 	
-	private IIcon getCasingEdgeIcon(TileEntityTeleporterPart part, MultiblockTeleporter teleporter, int side) {
-		if(teleporter == null || !teleporter.isAssembled()) { return icons[METADATA_CASING][DEFAULT]; }
+	private IIcon getCasingEdgeIcon(TileEntityCatalystPart part, MultiblockCatalyst catalyst, int side) {
+		if(catalyst == null || !catalyst.isAssembled()) { return icons[METADATA_CASING][DEFAULT]; }
 
-		CoordTriplet minCoord = teleporter.getMinimumCoord();
-		CoordTriplet maxCoord = teleporter.getMaximumCoord();
+		CoordTriplet minCoord = catalyst.getMinimumCoord();
+		CoordTriplet maxCoord = catalyst.getMaximumCoord();
 
 		boolean xExtreme, yExtreme, zExtreme;
 		xExtreme = yExtreme = zExtreme = false;
@@ -224,15 +227,16 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		switch(metadata) {
 		case METADATA_FLUID_PORT:
-			return new TileEntityTeleporterFluidPort();
-		
+			return new TileEntityCatalystFluidPort();
+		case METADATA_ACCESS_PORT:
+			return new TileEntityCatalystAccessPort();
+		case METADATA_ROTOR_BEARING
 		default: 
-			return new TileEntityTeleporterPart();
+			return new TileEntityCatalystPart();
 		
 		}
 	}
 	
-	//checks what tileentity this block belongs to and routes it to the correct functionality
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if(player.isSneaking()) {
@@ -280,6 +284,7 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		//insert openGuiMethod call here
 		return true;
 	}
+	
 	//wasnt in Beef's multiblock parts, just trying it out
 	public ItemStack getItemStackForName(String name) { 
 		for (int i = 0; i < subBlocks.length; i++) {
@@ -289,6 +294,4 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		}
 		return null;
 	}
-	
-	
 }

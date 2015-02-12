@@ -1,10 +1,15 @@
 package shibe.croberson.modularteleporters.common.block;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -30,8 +35,8 @@ public class BlockMultiblockGlass extends BlockContainer{
 	private IIcon[][] icons = new IIcon[subBlocks.length][16];
 	private IIcon transparentIcon;
 	
-	protected BlockMultiblockGlass() {
-		super(Material.glass);
+	protected BlockMultiblockGlass(Material material) {
+		super(material);
 		
 		setStepSound(soundTypeGlass);
 		setHardness(2.0F);
@@ -124,6 +129,19 @@ public class BlockMultiblockGlass extends BlockContainer{
 		
 	}
 	
+	@Override
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+	{
+		for(int i = 0; i < subBlocks.length; i++) {
+			par3List.add(new ItemStack(this, 1, i));
+		}
+	}
+	
+	@Override
+	public int damageDropped(int metadata){
+		return metadata;
+	}
+	
 	public ItemStack getItemStack(String name) {
 		int metadata = -1;
 		for(int i = 0; i < subBlocks.length; i++) {
@@ -139,4 +157,8 @@ public class BlockMultiblockGlass extends BlockContainer{
 		return new ItemStack(this, 1, metadata);
 	}
 	
+	@Override
+	public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+		return false;
+	}
 }

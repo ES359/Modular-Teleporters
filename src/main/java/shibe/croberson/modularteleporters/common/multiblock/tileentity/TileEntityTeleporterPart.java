@@ -11,8 +11,8 @@ public class TileEntityTeleporterPart extends TileEntityTeleporterPartBase{
 	
 	@Override
 	public void isGoodForFrame() throws MultiblockValidationException {
-		if(getBlockMetadata() != BlockTeleporterPart.TELEPORTER_CASING) {
-			throw new MultiblockValidationException(String.format("%d, %d, %d - only teleporter housing may be used as part of the teleporter's frame", xCoord, yCoord, zCoord));
+		if(getBlockMetadata() != BlockTeleporterPart.METADATA_CASING) {
+			throw new MultiblockValidationException(String.format("%d, %d, %d - only teleporter casing may be used as part of the teleporter's frame", xCoord, yCoord, zCoord));
 		}
 	}
 	
