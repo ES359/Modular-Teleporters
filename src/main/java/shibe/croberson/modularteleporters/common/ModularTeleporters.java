@@ -7,10 +7,10 @@ import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntit
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystFluidPort;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystGlass;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystPart;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystRotorBearing;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterGlass;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPart;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterRotorBearing;
 import shibe.croberson.modularteleporters.reference.Reference;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -48,9 +48,9 @@ public class ModularTeleporters{
 		GameRegistry.registerTileEntity(TileEntityTeleporterFluidPort.class, "MTTileEntityTeleporterFluidPort");
 		GameRegistry.registerTileEntity(TileEntityTeleporterGlass.class, "MTTileEntityTeleporterGlass");
 		GameRegistry.registerTileEntity(TileEntityTeleporterPart.class, "MTTileEntityTeleporterpart");
+		GameRegistry.registerTileEntity(TileEntityTeleporterRotorBearing.class, "MTTileEntityTeleporterRotorBearing");
 		
 		GameRegistry.registerTileEntity(TileEntityCatalystFluidPort.class, "MTTileEntityCatalystFluidPort");
-		GameRegistry.registerTileEntity(TileEntityCatalystRotorBearing.class, "MTTileEntityCatalystRotorBearing");
 		GameRegistry.registerTileEntity(TileEntityCatalystAccessPort.class, "MTTileEntityCatalystAccessPort");
 		GameRegistry.registerTileEntity(TileEntityCatalystGlass.class, "MTTileEntityCatalystGlass");
 		GameRegistry.registerTileEntity(TileEntityCatalystPart.class, "MTTileEntityCatalystPart");

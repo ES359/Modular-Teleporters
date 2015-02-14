@@ -1,18 +1,5 @@
 package shibe.croberson.modularteleporters.common.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import shibe.croberson.beefcore.core.common.CoordTriplet;
-import shibe.croberson.beefcore.core.multiblock.IMultiblockPart;
-import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
-import shibe.croberson.beefcore.core.multiblock.rectangular.PartPosition;
-import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
-import shibe.croberson.modularteleporters.common.multiblock.MultiblockCatalyst;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystFluidPort;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystPart;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystPartBase;
-import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystFluidPort.FluidFlow;
-import shibe.croberson.modularteleporters.reference.Reference;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,6 +10,20 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import shibe.croberson.beefcore.core.common.CoordTriplet;
+import shibe.croberson.beefcore.core.multiblock.IMultiblockPart;
+import shibe.croberson.beefcore.core.multiblock.MultiblockControllerBase;
+import shibe.croberson.beefcore.core.multiblock.rectangular.PartPosition;
+import shibe.croberson.modularteleporters.common.creativeTab.MTCreativeTab;
+import shibe.croberson.modularteleporters.common.multiblock.MultiblockCatalyst;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystAccessPort;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystFluidPort;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystFluidPort.FluidFlow;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystPart;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystPartBase;
+import shibe.croberson.modularteleporters.reference.Reference;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockCatalystPart extends BlockContainer{// TODO Basically make a carbon copy of blockTeleporterPart
 	
@@ -96,7 +97,7 @@ public class BlockCatalystPart extends BlockContainer{// TODO Basically make a c
 			break;
 		case METADATA_ACCESS_PORT:
 			//make getAccessPortIcon method
-		
+		}
 		//and end with this 
 		return icon != null ? icon : getIcon(side, metadata);
 	}
@@ -230,7 +231,6 @@ public class BlockCatalystPart extends BlockContainer{// TODO Basically make a c
 			return new TileEntityCatalystFluidPort();
 		case METADATA_ACCESS_PORT:
 			return new TileEntityCatalystAccessPort();
-		case METADATA_ROTOR_BEARING
 		default: 
 			return new TileEntityCatalystPart();
 		

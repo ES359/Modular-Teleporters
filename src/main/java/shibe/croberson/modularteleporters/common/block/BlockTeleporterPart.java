@@ -23,6 +23,7 @@ import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntit
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterFluidPort.FluidFlow;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPart;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterPartBase;
+import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityTeleporterRotorBearing;
 import shibe.croberson.modularteleporters.reference.Reference;
 import shibe.croberson.modularteleporters.utils.StaticUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -33,9 +34,9 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	public static final int METADATA_CASING = 0;
 	public static final int METADATA_CONTROLLER = 1;
 	public static final int METADATA_FLUID_PORT = 2;
-	public static final int METADATA_ACCESS_PORT = 3; //let this be a lesson to me, TELEPORTERS DONT NEED ACCESS PORTS
+	public static final int METADATA_ROTOR_BEARING = 3;
 	
-	public static final String[] subBlocks = {"casing", "controller", "fluidPort"};
+	public static final String[] subBlocks = {"casing", "controller", "fluidPort", "rotorBearing"};
 	
 	private static final int PORT_INLET = 0;
 	private static final int PORT_OUTLET = 1;
@@ -46,7 +47,7 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		{"default", "face", "corner", "eastwest", "northsouth", "vertical" }, //casing
 		{"off", "active"}, //controller
 		{"inlet", "outlet"}, //fluid port
-	
+		{"default"} //rotor bearing
 	};
 	
 	
@@ -82,6 +83,10 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
 		IIcon icon = null;
 		int metadata = blockAccess.getBlockMetadata(x, y, z);
+		if (metadata == METADATA_ROTOR_BEARING) {
+			return getIcon(side, metadata);
+		}
+		
 		switch(metadata) {
 		case METADATA_CASING:
 			icon = getCasingIcon(blockAccess, x, y, z, side);
@@ -225,7 +230,8 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		switch(metadata) {
 		case METADATA_FLUID_PORT:
 			return new TileEntityTeleporterFluidPort();
-		
+		case METADATA_ROTOR_BEARING:
+			return new TileEntityTeleporterRotorBearing();
 		default: 
 			return new TileEntityTeleporterPart();
 		
