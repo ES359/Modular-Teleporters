@@ -1,12 +1,15 @@
 package shibe.croberson.modularteleporters.common.multiblock.tileentity;
 
+import com.sun.naming.internal.ResourceManager;
+
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import shibe.croberson.modularteleporters.common.multiblock.MultiblockTeleporter;
 
-public class TileEntityTeleporterFluidPort extends TileEntityTeleporterPartBase implements IFluidHandler{
+public class TileEntityTeleporterFluidPort extends TileEntityTeleporterPartBase implements IFluidHandler {
 	
 	public enum FluidFlow {
 		in, out
@@ -24,38 +27,38 @@ public class TileEntityTeleporterFluidPort extends TileEntityTeleporterPartBase 
 	}
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		 
-		return 0;
+		if(!isConnected() || from != getOutwardsDir() || flowSetting != FluidFlow.in) { return 0; }
+		
+		return getTeleporter().fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource,
-			boolean doDrain) {
-		 
-		return null;
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		if(resource == null || !isConnected() || from != getOutwardsDir()) { return null; }
+		return getTeleporter().drain(resource, doDrain);
 	}
 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		 
-		return null;
+		if(!isConnected() || from != getOutwardsDir()) { return null; }
+		return getTeleporter().drain(maxDrain, doDrain);
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		 
-		return false;
+		if(!isConnected() || from != getOutwardsDir()) { return false; }
+		return getTeleporter().canFill(fluid);
 	}
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		 
-		return false;
+		if(!isConnected() || from != getOutwardsDir()) { return false; }
+		return getTeleporter().canDrain(fluid);
 	}
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		
+		MultiblockTeleporter teleporter = getTeleporter();
 		return null;
 	}
 	

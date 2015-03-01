@@ -8,4 +8,10 @@ public class Reference {
 	public static String resourcePrefix = MODID + ":";
 	
 	public static float metalHardness = 3.00F;
+	
+	public static int teleporterMaxHeight = 130; //adjust later for config values
+	public static int teleporterMaxSize = 130;
+	
+	public static int catalystMaxSize = 130;
+	public static int catalystMaxHeight = 150;
 }

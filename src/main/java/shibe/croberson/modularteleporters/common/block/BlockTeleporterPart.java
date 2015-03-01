@@ -1,11 +1,15 @@
 package shibe.croberson.modularteleporters.common.block;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -144,7 +148,7 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		if (te instanceof TileEntityTeleporterPartBase) {
 			TileEntityTeleporterPartBase part = (TileEntityTeleporterPartBase)te; 
 			MultiblockTeleporter teleporter = part.getTeleporter();
-			if(teleporter.getActive()) {
+			if(teleporter != null && teleporter.getActive()) {
 				return icons[METADATA_CONTROLLER][CONTROLLER_ON];
 			}else {
 				return icons[METADATA_CONTROLLER][CONTROLLER_ON];
@@ -235,6 +239,13 @@ public class BlockTeleporterPart extends BlockContainer implements ITileEntityPr
 		default: 
 			return new TileEntityTeleporterPart();
 		
+		}
+	}
+	
+	@Override
+	public void getSubBlocks(Item item, CreativeTabs tabs, List list) {
+		for(int i = 0; i < subBlocks.length; i++){
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 	

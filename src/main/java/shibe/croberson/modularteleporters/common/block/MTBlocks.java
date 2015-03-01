@@ -16,8 +16,9 @@ public class MTBlocks {
 	public static void init() {
 		//GameRegistry
 		GameRegistry.registerBlock(blockMetal, ItemBlockModularTeleporters.class, "blockMetal");
-		GameRegistry.registerBlock(blockMultiblockGlass, ItemBlockModularTeleporters.class,"blockMultiblockGlass");
-		GameRegistry.registerBlock(blockTeleporterPart, ItemBlockModularTeleporters.class,"blockTeleporterPart");
+		GameRegistry.registerBlock(blockMultiblockGlass, ItemBlockModularTeleporters.class, "blockMultiblockGlass");
+		GameRegistry.registerBlock(blockTeleporterPart, ItemBlockModularTeleporters.class, "blockTeleporterPart");
+		System.out.println(blockTeleporterPart.getUnlocalizedName());
 		//OreDictionary
 		String name; 
 		
