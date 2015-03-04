@@ -1,6 +1,7 @@
 package shibe.croberson.modularteleporters.common;
 
 import shibe.croberson.modularteleporters.common.block.MTBlocks;
+import shibe.croberson.modularteleporters.common.fluid.MTFluids;
 import shibe.croberson.modularteleporters.common.handler.MTConfigHandler;
 import shibe.croberson.modularteleporters.common.item.MTItems;
 import shibe.croberson.modularteleporters.common.multiblock.tileentity.TileEntityCatalystAccessPort;
@@ -30,13 +31,16 @@ public class ModularTeleporters{
 	public void preInit(FMLPreInitializationEvent event){
 		MTConfigHandler.init(event.getSuggestedConfigurationFile());
 		MTConfigHandler.loadConfiguration();
+		
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event){
 		MTItems.init();
 		MTBlocks.init();
+		MTFluids.init();
 		registerTileEntities();
+		
 	}
 	
 	@EventHandler

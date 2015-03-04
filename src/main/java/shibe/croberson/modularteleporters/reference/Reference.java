@@ -1,5 +1,7 @@
 package shibe.croberson.modularteleporters.reference;
 
+import java.util.ArrayList;
+
 public class Reference {
 	public static final String NAME = "Modular Teleporters";
 	public static final String MODID = "modularteleporters";
@@ -14,4 +16,6 @@ public class Reference {
 	
 	public static int catalystMaxSize = 130;
 	public static int catalystMaxHeight = 150;
+	
+	public static ArrayList<String> acceptableTeleporterFluids = new ArrayList();
 }
