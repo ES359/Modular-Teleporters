@@ -254,24 +254,27 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 
 	@Override
 	protected void onAssimilated(MultiblockControllerBase assimilator) {
-		attachedControllers.clear();
-		attachedRotorBearings.clear();
-		attachedTickables.clear();
+		if (attachedControllers != null) {
+			attachedControllers.clear();
+		}
+		if (attachedRotorBearings != null) {
+			attachedRotorBearings.clear();
+		}
+		if (attachedTickables != null) {
+			attachedTickables.clear();
+		}
+		
 		
 	}
 	
 	@Override
 	protected void isBlockGoodForInterior(World world, int x, int y, int z) throws MultiblockValidationException {
-		// We only allow air and functional parts in turbines.
 
 		// Air is ok
 		if(world.isAirBlock(x, y, z)) { return; }
 
-		Block block = world.getBlock(x, y, z);
-		int metadata = world.getBlockMetadata(x,y,z);
-
 		// Everything else, gtfo
-		throw new MultiblockValidationException(String.format("%d, %d, %d is invalid for a turbine interior. Only rotor parts, metal blocks and empty space are allowed.", x, y, z));
+		throw new MultiblockValidationException(String.format("%d, %d, %d is invalid for a teleporter interior. Only rotor parts, metal blocks and empty space are allowed.", x, y, z));
 	}
 	
 	@Override
@@ -460,7 +463,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		int teleporterY = getReferenceCoord().y;
 		int teleporterZ = getReferenceCoord().z;
 		int distance = (int) Math.sqrt(((teleporterX - destX)^2) + ((teleporterY - destY)^2) + ((teleporterZ - destZ)^2));
-		return (distance * accuracy * 100) / ((int) efficiency * 10); //use a trigometric function (like tanh) to curve this
+		return (distance^2)/(((int) efficiency * 10) * accuracy + 1);
 		
 	}
 	
