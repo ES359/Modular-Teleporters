@@ -64,7 +64,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	private Set<TileEntityTeleporterRotorBearing> attachedRotorBearings;
 	
 	//game data
-	public static final int MAX_POTENTIAL_ENERGIES = 1 * 10^6; //measured in joules, max potential energies is 1 megajoule, scientific notation because I am lazy, This shouldn't be final and should adjust due to size of teleporter
+	public static final int MAX_POTENTIAL_ENERGIES = 1000000; //measured in joules, max potential energies is 1 megajoule This shouldn't be final and should adjust due to size of teleporter
 	
 	private boolean active;
 	private float efficiency = 0.5F;
@@ -463,7 +463,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		int teleporterY = getReferenceCoord().y;
 		int teleporterZ = getReferenceCoord().z;
 		int distance = (int) Math.sqrt(((teleporterX - destX)^2) + ((teleporterY - destY)^2) + ((teleporterZ - destZ)^2));
-		return (distance^2)/(((int) efficiency * 10) * accuracy + 1);
+		return (int)((Math.pow(distance, 2)) / ((efficiency * 10) * accuracy + 1));
 		
 	}
 	
@@ -511,10 +511,10 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	 * @param y
 	 * @param z
 	 * @param accuracy
+	 * @param luck determines if the player will get lucky* and get a perfectly accurate teleport 	*see http://goo.gl/nhzzXX
 	 * @return
 	 */
-	
-	public boolean teleport(Entity entity, World world, int x, int y, int z, int accuracy) {
+	public boolean teleport(Entity entity, World world, int x, int y, int z, int accuracy, int luck) {
 		Random random = new Random();
 		if (entity == null ){ 
 			return false;
@@ -526,9 +526,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		randZ = random.nextInt(accuracy);
 		
 		
-		int destX = x + (randX * MtMathHelper.getRandNegativePositive()); //so far this will add a positive integer to and coordinate, negative or positive, pls fix
-		int destY = y + (randY * MtMathHelper.getRandNegativePositive());
-		int destZ = z + (randZ * MtMathHelper.getRandNegativePositive());
+		int destX = x + (MtMathHelper.randomifySign(randX, true, luck)); 
+		int destY = y + (MtMathHelper.randomifySign(randY, true, luck));
+		int destZ = z + (MtMathHelper.randomifySign(randZ, true, luck));
 		
 		if (!canTeleport(entity, world, destX, destY, destZ, accuracy)) { //THIS NEEDS FAIL-SAFE
 			for(int x2 = -randX/2 ; x2 < randX/2; x2++) {		//	<-\
