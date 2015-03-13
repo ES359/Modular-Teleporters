@@ -1,6 +1,6 @@
 package shibe.croberson.modularteleporters.reference;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Reference {
 	public static final String NAME = "Modular Teleporters";
@@ -16,6 +16,8 @@ public class Reference {
 	
 	public static int catalystMaxSize = 130;
 	public static int catalystMaxHeight = 150;
+	/** Register your fluid here with a value of efficiency **/
+	public static HashMap teleporterFluidEfficiencies = new HashMap();
 	
-	public static ArrayList<String> acceptableTeleporterFluids = new ArrayList();
+	
 }

@@ -69,7 +69,16 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	private boolean active;
 	private float efficiency = 0.5F;
 	private int maxIntakeRate;
+	private int luck;
 	private int potentialEnergy;
+	private int coolDown;
+	private int accuracy;
+	
+	private int fluidConsumedLastTick;
+	private int energyConsumedLastTick;
+	
+	private int destX, destY, destZ;
+	
 	
 	public MultiblockTeleporter(World world) {
 		super(world);
@@ -116,11 +125,11 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		this.active = active;
 	}
 	
-	public void setEfficiency(int efficiency) {
+	public void setEfficiency(float efficiency) {
 		this.efficiency = efficiency;
 	}
 	
-	public int getEfficiency(int efficiency) {
+	public float getEfficiency() {
 		return efficiency;
 	}
 	
@@ -218,9 +227,6 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	
 	@Override
 	protected void isMachineWhole() throws MultiblockValidationException{
-		if(attachedRotorBearings.size() != 1) {
-			throw new MultiblockValidationException("Teleporters require exactly one Rotor bearing, Nimrod");
-		}
 		super.isMachineWhole();
 		//basically look for blocks and stuff
 		
@@ -279,11 +285,22 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	
 	@Override
 	protected boolean updateServer() {
+		fluidConsumedLastTick = 0;
+		energyConsumedLastTick = 0;
 		
-		if(getActive()) {
+		if(getActive()) { // where active is enabled, add an if statement to check if it has enough power or fluid or something
 			
-			
-			
+			if(coolDown <= 0) {
+				for(int i = 0; i < updatePlayers.size(); i++) { //quick for loop, can't decide what entity to teleport, so just everyone that views the GUI for now.
+					teleport((Entity) updatePlayers.toArray()[i], this.worldObj, destX, destY, destZ);
+				}
+				_tank.drain(getFluidAmountRequiredForTeleport(worldObj, _tank.getFluid().getFluid(), destX, destY, destZ), true);
+				potentialEnergy -= this.getPowerRequiredForTeleport(worldObj, destX, destY, destZ);
+				
+				
+			} else {
+				coolDown--;
+			}
 		}
 		
 		
@@ -406,6 +423,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		if (!(canFill(fluid.getFluid()))) {
 			return 0;
 		}
+		if(doFill) {
+			setEfficiency((Float) Reference.teleporterFluidEfficiencies.get(fluid.getFluid().getName())); //efficiency is based on the fluid inside the teleporter
+		}
 		return _tank.fill(fluid, doFill);
 	}
 
@@ -427,7 +447,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 
 	
 	public boolean canFill(Fluid fluid) {
-		return Reference.acceptableTeleporterFluids.contains(fluid.getName());//use other fluids
+		return Reference.teleporterFluidEfficiencies.containsKey(fluid.getName());
 	}
 
 
@@ -458,21 +478,21 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	 * @param accuracy
 	 * @return
 	 */
-	public int getPowerRequiredForTeleport(World world, int destX, int destY, int destZ, int accuracy) {
+	public int getPowerRequiredForTeleport(World world, int destX, int destY, int destZ) {
 		int teleporterX = getReferenceCoord().x;
 		int teleporterY = getReferenceCoord().y;
 		int teleporterZ = getReferenceCoord().z;
-		int distance = (int) Math.sqrt(((teleporterX - destX)^2) + ((teleporterY - destY)^2) + ((teleporterZ - destZ)^2));
-		return (int)((Math.pow(distance, 2)) / ((efficiency * 10) * accuracy + 1));
+		int distance = (int) Math.sqrt((Math.pow((teleporterX - destX) ,2 ) + Math.pow(((teleporterY - destY)), 2) + Math.pow((teleporterZ - destZ), 2)));
+		return (int)((Math.pow(distance, 2)) / (efficiency * 10));
 		
 	}
 	
-	public int getFluidAmountRequiredForTeleport(World world, Fluid fluid, int destX, int destY, int accuracy) {
-		switch() {
-		case :
-		case :
-		
-		}
+	public int getFluidAmountRequiredForTeleport(World world, Fluid fluid, int destX, int destY, int destZ) {
+		int teleporterX = getReferenceCoord().x;
+		int teleporterY = getReferenceCoord().y;
+		int teleporterZ = getReferenceCoord().z;
+		int distance = (int) Math.sqrt((Math.pow((teleporterX - destX) ,2 ) + Math.pow(((teleporterY - destY)), 2) + Math.pow((teleporterZ - destZ), 2)));
+		return (int) ((Integer) Reference.teleporterFluidEfficiencies.get(fluid.getName()) * distance / accuracy);
 	}
 	/**
 	 * Checks if the space provided is 2 high
@@ -514,7 +534,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	 * @param luck determines if the player will get lucky* and get a perfectly accurate teleport 	*see http://goo.gl/nhzzXX
 	 * @return
 	 */
-	public boolean teleport(Entity entity, World world, int x, int y, int z, int accuracy, int luck) {
+	public boolean teleport(Entity entity, World world, int x, int y, int z) {
 		Random random = new Random();
 		if (entity == null ){ 
 			return false;
