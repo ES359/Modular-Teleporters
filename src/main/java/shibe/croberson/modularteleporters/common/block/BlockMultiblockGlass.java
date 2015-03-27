@@ -56,7 +56,7 @@ public class BlockMultiblockGlass extends BlockContainer{
 		transparentIcon = registry.registerIcon(Reference.resourcePrefix + "tile." + textureBaseName + ".transparent");
 		for(int metadata = 0; metadata < subBlocks.length; metadata++) {
 			for(int i = 0; i < 16; i++) {
-				icons[metadata][i] = registry.registerIcon(Reference.resourcePrefix + "tile." + textureBaseName + "." + subBlocks[metadata] + Integer.toString(i));
+				icons[metadata][i] = registry.registerIcon(Reference.resourcePrefix + "tile." + textureBaseName + "." + subBlocks[metadata] + '.' + Integer.toString(i));
 			}
 		}
 	}

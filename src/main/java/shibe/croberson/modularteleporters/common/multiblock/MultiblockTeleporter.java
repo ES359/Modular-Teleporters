@@ -44,10 +44,9 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	private static final int tickBetweenUpdates = 3;
 	
 	//fluid tank
-	public static final int TANK_SIZE = 16000; //tank size stays final for now, but will need to adjust due to size
+	public static int tankSize = 16000; //tank size stays final for now, but will need to adjust due to size
 	public static final int FLUID_NONE = -1;
 	public static final int MAX_PERMITTED_FLOW = 2000;
-	public static final int WORK_NECESSARY = 4000; //4000 units of work, genius
 	private FluidTank _tank;
 	
 	//rotarycraft implementation
@@ -62,15 +61,17 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	private Set<TileEntityTeleporterGlass> attachedGlass;
 	private Set<TileEntityTeleporterFluidPort> attachedFluidPorts;
 	private Set<TileEntityTeleporterRotorBearing> attachedRotorBearings;
-	
+	private Set<CoordTriplet> foundAir;
 	//game data
-	public static final int MAX_POTENTIAL_ENERGIES = 1000000; //measured in joules, max potential energies is 1 megajoule This shouldn't be final and should adjust due to size of teleporter
+	/**maximum amount of energy the teleporter is capable of storing **/
+	public static int maximumPotentialEnergy;
 	
 	private boolean active;
 	private float efficiency = 0.5F;
 	private int maxIntakeRate;
 	private int luck;
 	private int potentialEnergy;
+	private int defaultCoolDown;
 	private int coolDown;
 	private int accuracy;
 	
@@ -85,13 +86,15 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		
 		updatePlayers = new HashSet<EntityPlayer>();
 		maxIntakeRate = MAX_PERMITTED_FLOW;
-		_tank = new FluidTank(TANK_SIZE);
+		_tank = new FluidTank(tankSize);
 		ticksSinceLastUpdate = 0;
 		
 		attachedTickables = new HashSet<ITickableMultiblockPart>();
 		attachedGlass = new HashSet<TileEntityTeleporterGlass>();
 		attachedFluidPorts = new HashSet<TileEntityTeleporterFluidPort>();
 		attachedRotorBearings = new HashSet<TileEntityTeleporterRotorBearing>();
+		foundAir = new HashSet<CoordTriplet>();
+		tankSize = foundAir.size() * 8;
 		active = false;
 		
 	}
@@ -231,6 +234,8 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		//basically look for blocks and stuff
 		
 		
+		
+		
 	}
 	
 	@Override
@@ -277,10 +282,13 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	protected void isBlockGoodForInterior(World world, int x, int y, int z) throws MultiblockValidationException {
 
 		// Air is ok
-		if(world.isAirBlock(x, y, z)) { return; }
+		if(world.isAirBlock(x, y, z)) { 
+			
+			return;
+		}
 
 		// Everything else, gtfo
-		throw new MultiblockValidationException(String.format("%d, %d, %d is invalid for a teleporter interior. Only rotor parts, metal blocks and empty space are allowed.", x, y, z));
+		throw new MultiblockValidationException(String.format("%d, %d, %d is invalid for a teleporter interior, metal blocks and empty space are allowed.", x, y, z));
 	}
 	
 	@Override
@@ -291,9 +299,13 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 		if(getActive()) { // where active is enabled, add an if statement to check if it has enough power or fluid or something
 			
 			if(coolDown <= 0) {
+				
 				for(int i = 0; i < updatePlayers.size(); i++) { //quick for loop, can't decide what entity to teleport, so just everyone that views the GUI for now.
-					teleport((Entity) updatePlayers.toArray()[i], this.worldObj, destX, destY, destZ);
+					if (canTeleport((Entity) updatePlayers.toArray()[i], worldObj, destX, destY, destZ, accuracy)){
+						teleport((Entity) updatePlayers.toArray()[i], this.worldObj, destX, destY, destZ);
+					}
 				}
+				setActive(false);
 				_tank.drain(getFluidAmountRequiredForTeleport(worldObj, _tank.getFluid().getFluid(), destX, destY, destZ), true);
 				potentialEnergy -= this.getPowerRequiredForTeleport(worldObj, destX, destY, destZ);
 				
@@ -355,7 +367,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	* Used when dispatching update packets from the server.
 	* @param buf ByteBuf into which the turbine's full status should be written
 	*/
-	public void cerealize(ByteBuf buf) {//dont ask me what this method does, I just copied it from beef and I have yet to figure it out
+	public void cerealize(ByteBuf buf) {
 		// Capture compacted fluid data first
 				int fluidID, fluidAmt; //teleporters only use one tank and only input. Catalysts? different story
 				{
@@ -520,7 +532,7 @@ public class MultiblockTeleporter extends RectangularMultiblockControllerBase im
 	 * @return
 	 */
 	public boolean canTeleport(Entity entity, World world, int x, int y, int z, int accuracy) {
-		return entity != null && isSafeLocationForSteve(world, x, y, z) && getPowerRequiredForTeleport(world, x, y, z, accuracy) < getPotentialEnergy();
+		return entity != null && isSafeLocationForSteve(world, x, y, z) && getPowerRequiredForTeleport(world, x, y, z) < getPotentialEnergy();
 	}
 	
 	/**
